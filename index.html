@@ -9,20 +9,47 @@
     body {
       font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
       font-weight: 600;
-      font-size: 1.05rem; /* Увеличен основной размер текста */
+      font-size: 1.05rem;
       background: #0a0a12;
       color: #e0e0e0;
       line-height: 1.7;
       margin: 0;
       padding: 0;
     }
+
     header {
-      background: #1a1a2e;
-      padding: 3.5rem 2rem 2.5rem;
+      position: relative;
+      padding: 3.5rem 2rem 4rem; /* Расширено вниз */
       text-align: center;
       border-bottom: 1px solid #333;
-      position: relative;
+      overflow: hidden;
     }
+
+    /* Фоновое видео */
+    .bg-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      opacity: 0.5; /* Прозрачность 50% */
+      pointer-events: none; /* Не интерактивно */
+    }
+
+    /* Fallback для браузеров без поддержки video */
+    .bg-fallback {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('fallback.jpg') center/cover no-repeat;
+      z-index: -1;
+      pointer-events: none;
+    }
+
     .lang-switch {
       position: absolute;
       top: 1.3rem;
@@ -40,23 +67,31 @@
       background: #ff6b6b;
       color: #0a0a12;
     }
+
     h1 {
-      font-size: 3.2rem; /* Увеличен */
+      font-size: 3.2rem;
       margin: 0;
       color: #ff6b6b;
       font-weight: 700;
+      position: relative;
+      z-index: 1;
     }
+
     .subtitle {
-      font-size: 1.4rem; /* Увеличен */
+      font-size: 1.4rem;
       color: #aaa;
       margin-top: 1.2rem;
       font-weight: 500;
+      position: relative;
+      z-index: 1;
     }
+
     .container {
       max-width: 850px;
       margin: 2.5rem auto;
       padding: 0 1.8rem;
     }
+
     .quote {
       font-style: italic;
       color: #ffd166;
@@ -64,12 +99,16 @@
       padding-left: 1.6rem;
       border-left: 3px solid #ff6b6b;
       font-weight: 500;
-      font-size: 1.15rem; /* Цитата чуть крупнее */
+      font-size: 1.15rem;
+      position: relative;
+      z-index: 1;
     }
+
     .highlight {
       color: #4ecdc4;
       font-weight: 700;
     }
+
     footer {
       text-align: center;
       padding: 2.2rem;
@@ -86,13 +125,14 @@
       border-radius: 8px;
       border: 1px solid #333;
     }
+
     .section h2 {
       color: #4ecdc4;
       margin-top: 0;
       border-bottom: 1px solid #333;
       padding-bottom: 1.1rem;
       font-weight: 700;
-      font-size: 1.8rem; /* Увеличен заголовок секции */
+      font-size: 1.8rem;
     }
 
     .social-link {
@@ -125,6 +165,13 @@
 <body>
 
 <header>
+  <!-- Фоновое видео -->
+  <video autoplay muted loop playsinline class="bg-video">
+    <source src="background.mp4" type="video/mp4">
+    <!-- Fallback для старых браузеров -->
+    <div class="bg-fallback"></div>
+  </video>
+
   <div class="lang-switch" id="langSwitch">RU</div>
   <h1>GALAXY STUDIOS</h1>
   <div class="subtitle" id="subtitle">Разработка игр с душой</div>
@@ -189,7 +236,7 @@
       p2: "Наша команда объединяет опытных разработчиков, художников, композиторов и дизайнеров, которые верят в силу интерактивного повествования. Мы работаем над проектами, в которых каждый элемент — от звука до визуала — служит единой цели: создать незабываемый опыт.",
       p3: "Мы не гонимся за количеством — мы создаём то, во что сами хотели бы играть.",
       news: "Следите за новостями",
-      followText: "Подпишитесь на наши соцсети, чтобы первыми узнавать о релизах, обновлениях и закулисье разработки:",
+      followText: "Подпишитесь на наши соцсети, чтобы первыми узнавать о релизах, обновлениях и закустье разработки:",
       about: "О студии",
       aboutP1: "Galaxy Studios — это молодая, но амбициозная команда, стремящаяся внести свой вклад в индустрию игр. Мы экспериментируем с жанрами, механиками и повествованием, чтобы находить новые способы вовлечь игрока.",
       aboutP2: "Наш подход — качество, внимание к деталям и уважение к аудитории.",
@@ -241,6 +288,3 @@
 
 </body>
 </html>
-
-
-
