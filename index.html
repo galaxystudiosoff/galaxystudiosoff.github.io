@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GALAXY STUDIOS — Game Development</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      font-weight: 600;
+      font-size: 1.05rem; /* Увеличен основной размер текста */
+      background: #0a0a12;
+      color: #e0e0e0;
+      line-height: 1.7;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #1a1a2e;
+      padding: 3.5rem 2rem 2.5rem;
+      text-align: center;
+      border-bottom: 1px solid #333;
+      position: relative;
+    }
+    .lang-switch {
+      position: absolute;
+      top: 1.3rem;
+      right: 1.5rem;
+      background: rgba(30, 30, 46, 0.7);
+      padding: 0.5rem 0.9rem;
+      border-radius: 4px;
+      border: 1px solid #ff6b6b;
+      color: #ffd166;
+      cursor: pointer;
+      font-size: 1rem;
+      user-select: none;
+    }
+    .lang-switch:hover {
+      background: #ff6b6b;
+      color: #0a0a12;
+    }
+    h1 {
+      font-size: 3.2rem; /* Увеличен */
+      margin: 0;
+      color: #ff6b6b;
+      font-weight: 700;
+    }
+    .subtitle {
+      font-size: 1.4rem; /* Увеличен */
+      color: #aaa;
+      margin-top: 1.2rem;
+      font-weight: 500;
+    }
+    .container {
+      max-width: 850px;
+      margin: 2.5rem auto;
+      padding: 0 1.8rem;
+    }
+    .quote {
+      font-style: italic;
+      color: #ffd166;
+      margin: 2.2rem 0;
+      padding-left: 1.6rem;
+      border-left: 3px solid #ff6b6b;
+      font-weight: 500;
+      font-size: 1.15rem; /* Цитата чуть крупнее */
+    }
+    .highlight {
+      color: #4ecdc4;
+      font-weight: 700;
+    }
+    footer {
+      text-align: center;
+      padding: 2.2rem;
+      color: #666;
+      font-size: 1rem;
+      border-top: 1px solid #222;
+      font-weight: 500;
+    }
+
+    .section {
+      margin: 3.5rem 0;
+      padding: 2.2rem;
+      background: rgba(30, 30, 46, 0.5);
+      border-radius: 8px;
+      border: 1px solid #333;
+    }
+    .section h2 {
+      color: #4ecdc4;
+      margin-top: 0;
+      border-bottom: 1px solid #333;
+      padding-bottom: 1.1rem;
+      font-weight: 700;
+      font-size: 1.8rem; /* Увеличен заголовок секции */
+    }
+
+    .social-link {
+      display: inline-block;
+      margin: 0.6rem 1.2rem 0.6rem 0;
+      padding: 0.9rem 1.6rem;
+      background: #1a1a2e;
+      color: #ffd166;
+      border: 1px solid #ff6b6b;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: all 0.3s;
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+    .social-link:hover {
+      background: #ff6b6b;
+      color: #0a0a12;
+    }
+
+    .founding-date {
+      font-size: 0.95rem;
+      color: #777;
+      margin-top: 1.6rem;
+      text-align: center;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="lang-switch" id="langSwitch">RU</div>
+  <h1>GALAXY STUDIOS</h1>
+  <div class="subtitle" id="subtitle">Разработка игр с душой</div>
+</header>
+
+<div class="container">
+
+  <p id="p1">
+    <span class="highlight">Galaxy Studios</span> — независимая игровая студия, основанная в 2023 году. 
+    Мы создаём уникальные игровые миры, в которых важны не только механики, но и атмосфера, история и эмоции.
+  </p>
+
+  <div class="quote" id="quote">
+    «Игра — это не просто развлечение. Это вселенная, в которую можно погрузиться».
+  </div>
+
+  <p id="p2">
+    Наша команда объединяет опытных разработчиков, художников, композиторов и дизайнеров, 
+    которые верят в силу интерактивного повествования. Мы работаем над проектами, 
+    в которых каждый элемент — от звука до визуала — служит единой цели: создать незабываемый опыт.
+  </p>
+
+  <p id="p3">
+    Мы не гонимся за количеством — мы создаём то, во что сами хотели бы играть.
+  </p>
+
+  <div class="section">
+    <h2 id="news">Следите за новостями</h2>
+    <p id="follow-text">Подпишитесь на наши соцсети, чтобы первыми узнавать о релизах, обновлениях и закулисье разработки:</p>
+    <a href="https://www.youtube.com/@GALAXYSTUDIOSOFFRU" target="_blank" class="social-link" id="youtubeLink">YouTube</a>
+    <a href="https://vk.com/galaxystudiosoff" target="_blank" class="social-link">VK</a>
+    <a href="https://t.me/galaxystudiosoff" target="_blank" class="social-link">Telegram</a>
+  </div>
+
+  <div class="section">
+    <h2 id="about">О студии</h2>
+    <p id="about-p1">
+      Galaxy Studios — это молодая, но амбициозная команда, стремящаяся внести свой вклад в индустрию игр. 
+      Мы экспериментируем с жанрами, механиками и повествованием, чтобы находить новые способы вовлечь игрока.
+    </p>
+    <p id="about-p2">
+      Наш подход — качество, внимание к деталям и уважение к аудитории.
+    </p>
+  </div>
+
+  <div class="founding-date" id="foundingDate">
+    Дата основания: 12 сентября 2023 года
+  </div>
+
+</div>
+
+<footer>
+  <p id="footerText">© 2025 GALAXY STUDIOS. Не все права защищены.</p>
+</footer>
+
+<script>
+  const translations = {
+    ru: {
+      subtitle: "Разработка игр с душой",
+      p1: "<span class=\"highlight\">Galaxy Studios</span> — независимая игровая студия, основанная в 2023 году. Мы создаём уникальные игровые миры, в которых важны не только механики, но и атмосфера, история и эмоции.",
+      quote: "«Игра — это не просто развлечение. Это вселенная, в которую можно погрузиться».",
+      p2: "Наша команда объединяет опытных разработчиков, художников, композиторов и дизайнеров, которые верят в силу интерактивного повествования. Мы работаем над проектами, в которых каждый элемент — от звука до визуала — служит единой цели: создать незабываемый опыт.",
+      p3: "Мы не гонимся за количеством — мы создаём то, во что сами хотели бы играть.",
+      news: "Следите за новостями",
+      followText: "Подпишитесь на наши соцсети, чтобы первыми узнавать о релизах, обновлениях и закулисье разработки:",
+      about: "О студии",
+      aboutP1: "Galaxy Studios — это молодая, но амбициозная команда, стремящаяся внести свой вклад в индустрию игр. Мы экспериментируем с жанрами, механиками и повествованием, чтобы находить новые способы вовлечь игрока.",
+      aboutP2: "Наш подход — качество, внимание к деталям и уважение к аудитории.",
+      foundingDate: "Дата основания: 12 сентября 2023 года",
+      footerText: "© 2025 GALAXY STUDIOS. Не все права защищены.",
+      youtubeUrl: "https://www.youtube.com/@GALAXYSTUDIOSOFFRU"
+    },
+    en: {
+      subtitle: "Game Development with Soul",
+      p1: "<span class=\"highlight\">Galaxy Studios</span> is an independent game studio founded in 2023. We create unique game worlds where mechanics, atmosphere, story, and emotion all matter.",
+      quote: "“A game isn’t just entertainment. It’s a universe you can dive into.”",
+      p2: "Our team brings together experienced developers, artists, composers, and designers who believe in the power of interactive storytelling. We work on projects where every element—from sound to visuals—serves one goal: to create an unforgettable experience.",
+      p3: "We don’t chase quantity—we build games we’d want to play ourselves.",
+      news: "Follow Us",
+      followText: "Subscribe to our social media to be the first to know about releases, updates, and behind-the-scenes development:",
+      about: "About the Studio",
+      aboutP1: "Galaxy Studios is a young but ambitious team striving to make its mark on the gaming industry. We experiment with genres, mechanics, and narrative to find new ways to engage players.",
+      aboutP2: "Our approach is quality, attention to detail, and respect for our audience.",
+      foundingDate: "Founded: September 12, 2023",
+      footerText: "© 2025 GALAXY STUDIOS. Not all rights reserved.",
+      youtubeUrl: "https://www.youtube.com/@GALAXYSTUDIOSOFF"
+    }
+  };
+
+  let currentLang = 'ru';
+
+  function setLanguage(lang) {
+    currentLang = lang;
+    document.getElementById('langSwitch').textContent = lang === 'ru' ? 'RU' : 'EN';
+    document.getElementById('subtitle').textContent = translations[lang].subtitle;
+    document.getElementById('p1').innerHTML = translations[lang].p1;
+    document.getElementById('quote').innerHTML = translations[lang].quote;
+    document.getElementById('p2').innerHTML = translations[lang].p2;
+    document.getElementById('p3').innerHTML = translations[lang].p3;
+    document.getElementById('news').textContent = translations[lang].news;
+    document.getElementById('follow-text').textContent = translations[lang].followText;
+    document.getElementById('about').textContent = translations[lang].about;
+    document.getElementById('about-p1').textContent = translations[lang].aboutP1;
+    document.getElementById('about-p2').textContent = translations[lang].aboutP2;
+    document.getElementById('foundingDate').textContent = translations[lang].foundingDate;
+    document.getElementById('footerText').textContent = translations[lang].footerText;
+    document.getElementById('youtubeLink').href = translations[lang].youtubeUrl;
+  }
+
+  document.getElementById('langSwitch').addEventListener('click', () => {
+    setLanguage(currentLang === 'ru' ? 'en' : 'ru');
+  });
+</script>
+
+</body>
+</html>
+
