@@ -6,285 +6,616 @@
   <title>GALAXY STUDIOS — Game Development</title>
   <link rel="icon" href="favicon.png" type="image/png">
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
       font-weight: 600;
       font-size: 1.05rem;
-      background: #0a0a12;
-      color: #e0e0e0;
+      background: linear-gradient(135deg, #0c0c1a 0%, #1a0a2e 50%, #0c0c1a 100%);
+      color: #d0d0ff;
       line-height: 1.7;
-      margin: 0;
-      padding: 0;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Фоновые радиальные блики */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 15% 25%, rgba(0, 200, 255, 0.1) 0%, transparent 25%),
+        radial-gradient(circle at 85% 75%, rgba(255, 50, 100, 0.1) 0%, transparent 25%),
+        radial-gradient(circle at 50% 50%, rgba(100, 255, 200, 0.05) 0%, transparent 35%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    body.no-effects::before {
+      display: none;
+    }
+
+    /* Сканирующая линия */
+    .scanline {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.15) 0px,
+        rgba(0, 0, 0, 0.15) 1px,
+        transparent 1px,
+        transparent 2px
+      );
+      pointer-events: none;
+      z-index: 1000;
+      animation: scan 3s linear infinite;
+    }
+
+    body.no-effects .scanline {
+      display: none;
+    }
+
+    @keyframes scan {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
     }
 
     header {
-      position: relative;
-      padding: 3.5rem 2rem 4rem; /* Расширено вниз */
+      background: linear-gradient(180deg, rgba(26, 10, 46, 0.95) 0%, rgba(12, 6, 20, 0.95) 100%);
+      padding: 3.5rem 2rem 2.5rem;
       text-align: center;
-      border-bottom: 1px solid #333;
+      border-bottom: 1px solid rgba(0, 200, 255, 0.3);
+      position: relative;
       overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
     }
 
-    /* Фоновое видео */
-    .bg-video {
+    header::before {
+      content: '';
       position: absolute;
       top: 0;
-      left: 0;
+      left: -100%;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      z-index: -1;
-      opacity: 0.5; /* Прозрачность 50% */
-      pointer-events: none; /* Не интерактивно */
+      background: linear-gradient(90deg, transparent, rgba(0, 200, 255, 0.15), transparent);
+      animation: shine 4s infinite;
     }
 
-    /* Fallback для браузеров без поддержки video */
-    .bg-fallback {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: url('fallback.jpg') center/cover no-repeat;
-      z-index: -1;
-      pointer-events: none;
+    body.no-effects header::before {
+      display: none;
     }
 
-    .lang-switch {
+    @keyframes shine {
+      0% { left: -100%; }
+      25% { left: 100%; }
+      100% { left: 100%; }
+    }
+
+    .settings-btn {
       position: absolute;
-      top: 1.3rem;
+      top: 1.2rem;
       right: 1.5rem;
-      background: rgba(30, 30, 46, 0.7);
-      padding: 0.5rem 0.9rem;
-      border-radius: 4px;
-      border: 1px solid #ff6b6b;
-      color: #ffd166;
+      background: rgba(20, 10, 40, 0.7);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid #ff4d94;
+      color: #7fffd4;
       cursor: pointer;
-      font-size: 1rem;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       user-select: none;
+      transition: all 0.3s ease;
     }
-    .lang-switch:hover {
-      background: #ff6b6b;
-      color: #0a0a12;
+    .settings-btn:hover {
+      background: #ff4d94;
+      color: #0c0c1a;
+      transform: scale(1.1);
+    }
+
+    /* Всплывающее меню настроек */
+    .settings-menu {
+      position: absolute;
+      top: 55px;
+      right: 1.5rem;
+      background: rgba(12, 6, 20, 0.95);
+      border: 1px solid rgba(0, 200, 255, 0.3);
+      border-radius: 8px;
+      padding: 0.8rem 0;
+      width: 180px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+      z-index: 2000;
+      display: none;
+      backdrop-filter: blur(4px);
+    }
+
+    .settings-menu.visible {
+      display: block;
+    }
+
+    .settings-option {
+      padding: 0.6rem 1.2rem;
+      color: #aaaaff;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .settings-option:hover {
+      background: rgba(0, 200, 255, 0.1);
+      color: #00ffff;
     }
 
     h1 {
       font-size: 3.2rem;
       margin: 0;
-      color: #ff6b6b;
+      color: #ff4d94;
       font-weight: 700;
+      text-shadow: 0 0 20px rgba(255, 77, 148, 0.6);
+      letter-spacing: 1px;
       position: relative;
-      z-index: 1;
+      animation: pulse 2.5s ease-in-out infinite alternate;
+    }
+
+    body.no-effects h1 {
+      animation: none !important;
+      text-shadow: none !important;
+    }
+
+    @keyframes pulse {
+      from { text-shadow: 0 0 20px rgba(255, 77, 148, 0.6); }
+      to { text-shadow: 0 0 35px rgba(255, 77, 148, 0.9); }
     }
 
     .subtitle {
       font-size: 1.4rem;
-      color: #aaa;
+      color: #aaaaff;
       margin-top: 1.2rem;
-      font-weight: 500;
-      position: relative;
-      z-index: 1;
+      text-shadow: 0 0 10px rgba(170, 170, 255, 0.4);
+      animation: fadein 2s ease-out;
+    }
+
+    body.no-effects .subtitle {
+      animation: none !important;
+      text-shadow: none !important;
     }
 
     .container {
       max-width: 850px;
       margin: 2.5rem auto;
       padding: 0 1.8rem;
+      position: relative;
+      z-index: 10;
     }
 
     .quote {
       font-style: italic;
-      color: #ffd166;
+      color: #7fffd4;
       margin: 2.2rem 0;
-      padding-left: 1.6rem;
-      border-left: 3px solid #ff6b6b;
+      padding: 1.8rem;
+      border-left: 4px solid #ff4d94;
       font-weight: 500;
       font-size: 1.15rem;
+      background: rgba(20, 10, 40, 0.4);
+      border-radius: 0 10px 10px 0;
       position: relative;
-      z-index: 1;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+      animation: slidein 1s ease-out;
+    }
+
+    body.no-effects .quote {
+      animation: none !important;
+      box-shadow: none;
+    }
+
+    .quote::before {
+      content: '"';
+      position: absolute;
+      top: -22px;
+      left: 12px;
+      font-size: 4.2rem;
+      color: rgba(127, 255, 212, 0.2);
+      font-family: serif;
+    }
+
+    body.no-effects .quote::before {
+      display: none;
     }
 
     .highlight {
-      color: #4ecdc4;
+      color: #00ffff;
       font-weight: 700;
+      text-shadow: 0 0 12px rgba(0, 255, 255, 0.4);
     }
 
-    footer {
-      text-align: center;
-      padding: 2.2rem;
-      color: #666;
-      font-size: 1rem;
-      border-top: 1px solid #222;
-      font-weight: 500;
+    body.no-effects .highlight {
+      text-shadow: none !important;
     }
 
     .section {
       margin: 3.5rem 0;
-      padding: 2.2rem;
-      background: rgba(30, 30, 46, 0.5);
-      border-radius: 8px;
-      border: 1px solid #333;
+      padding: 2.5rem;
+      background: rgba(25, 15, 45, 0.5);
+      border-radius: 14px;
+      border: 1px solid rgba(0, 200, 255, 0.25);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+      animation: fadein 1.5s ease-out;
+    }
+
+    body.no-effects .section {
+      animation: none !important;
+      box-shadow: none;
+    }
+
+    .section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #ff4d94, #00ffff, #7fffd4);
+    }
+
+    body.no-effects .section::before {
+      display: none;
     }
 
     .section h2 {
-      color: #4ecdc4;
+      color: #00ffff;
       margin-top: 0;
-      border-bottom: 1px solid #333;
-      padding-bottom: 1.1rem;
-      font-weight: 700;
+      border-bottom: 2px solid rgba(0, 200, 255, 0.3);
+      padding-bottom: 1.2rem;
       font-size: 1.8rem;
+      font-weight: 700;
+      text-shadow: 0 0 12px rgba(0, 255, 255, 0.3);
+    }
+
+    body.no-effects .section h2 {
+      text-shadow: none !important;
     }
 
     .social-link {
       display: inline-block;
       margin: 0.6rem 1.2rem 0.6rem 0;
       padding: 0.9rem 1.6rem;
-      background: #1a1a2e;
-      color: #ffd166;
-      border: 1px solid #ff6b6b;
-      border-radius: 4px;
+      background: linear-gradient(135deg, #1a0a2e 0%, #2a0a3e 100%);
+      color: #7fffd4;
+      border: 2px solid #ff4d94;
+      border-radius: 8px;
       text-decoration: none;
-      transition: all 0.3s;
+      transition: all 0.35s ease;
       font-weight: 600;
       font-size: 1.05rem;
+      position: relative;
+      overflow: hidden;
     }
+
+    .social-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(127, 255, 212, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
     .social-link:hover {
-      background: #ff6b6b;
-      color: #0a0a12;
+      background: linear-gradient(135deg, #ff4d94 0%, #ff77b0 100%);
+      color: #0c0c1a;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(255, 77, 148, 0.4);
+    }
+
+    .social-link:hover::before {
+      left: 100%;
+    }
+
+    body.no-effects .social-link {
+      transition: none !important;
+      transform: none !important;
+      box-shadow: none !important;
+      background: #1a0a2e !important;
+      border-color: #ff4d94 !important;
+    }
+
+    body.no-effects .social-link::before,
+    body.no-effects .social-link:hover::before {
+      display: none;
+    }
+
+    body.no-effects .social-link:hover {
+      transform: none !important;
+      box-shadow: none !important;
+      background: #1a0a2e !important;
     }
 
     .founding-date {
       font-size: 0.95rem;
-      color: #777;
+      color: #8888cc;
       margin-top: 1.6rem;
       text-align: center;
       font-weight: 500;
+      animation: fadein 2s ease-out;
+    }
+
+    body.no-effects .founding-date {
+      animation: none !important;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2.5rem;
+      color: #8888cc;
+      font-size: 1rem;
+      border-top: 1px solid rgba(60, 40, 100, 0.5);
+      background: rgba(12, 6, 20, 0.85);
+      margin-top: 3.5rem;
+      font-weight: 500;
+    }
+
+    /* Глитч-эффект */
+    .glitch {
+      position: relative;
+    }
+
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    body.no-effects .glitch::before,
+    body.no-effects .glitch::after {
+      display: none;
+    }
+
+    .glitch::before {
+      left: 2px;
+      text-shadow: -2px 0 #ff00c1;
+      clip: rect(44px, 450px, 56px, 0);
+      animation: glitch-anim 6s infinite linear alternate-reverse;
+    }
+
+    .glitch::after {
+      left: -2px;
+      text-shadow: -2px 0 #00fff9, 2px 2px #ff00c1;
+      clip: rect(44px, 450px, 56px, 0);
+      animation: glitch-anim2 6s infinite linear alternate-reverse;
+    }
+
+    @keyframes glitch-anim {
+      0% { clip: rect(42px, 9999px, 44px, 0); }
+      10% { clip: rect(12px, 9999px, 59px, 0); }
+      20% { clip: rect(48px, 9999px, 29px, 0); }
+      30% { clip: rect(42px, 9999px, 73px, 0); }
+      40% { clip: rect(63px, 9999px, 27px, 0); }
+      50% { clip: rect(34px, 9999px, 55px, 0); }
+      60% { clip: rect(86px, 9999px, 73px, 0); }
+      70% { clip: rect(20px, 9999px, 20px, 0); }
+      80% { clip: rect(26px, 9999px, 60px, 0); }
+      90% { clip: rect(25px, 9999px, 66px, 0); }
+      100% { clip: rect(52px, 9999px, 14px, 0); }
+    }
+
+    @keyframes glitch-anim2 {
+      0% { clip: rect(65px, 9999px, 100px, 0); }
+      10% { clip: rect(52px, 9999px, 74px, 0); }
+      20% { clip: rect(79px, 9999px, 85px, 0); }
+      30% { clip: rect(75px, 9999px, 5px, 0); }
+      40% { clip: rect(67px, 9999px, 61px, 0); }
+      50% { clip: rect(14px, 9999px, 79px, 0); }
+      60% { clip: rect(1px, 9999px, 66px, 0); }
+      70% { clip: rect(86px, 9999px, 30px, 0); }
+      80% { clip: rect(23px, 9999px, 98px, 0); }
+      90% { clip: rect(85px, 9999px, 72px, 0); }
+      100% { clip: rect(38px, 9999px, 49px, 0); }
+    }
+
+    @keyframes fadein {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slidein {
+      from { transform: translateX(-60px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 2.4rem; }
+      .subtitle { font-size: 1.2rem; }
+      .container { padding: 0 1.2rem; }
+      .section { padding: 1.6rem; }
+      .settings-menu {
+        right: 1rem;
+        width: 160px;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="scanline"></div>
 
-<header>
-  <!-- Фоновое видео -->
-  <video autoplay muted loop playsinline class="bg-video">
-    <source src="background.mp4" type="video/mp4">
-    <!-- Fallback для старых браузеров -->
-    <div class="bg-fallback"></div>
-  </video>
+  <header>
+    <div class="settings-btn" id="settingsBtn">⚙️</div>
+    <div class="settings-menu" id="settingsMenu">
+      <div class="settings-option" id="langToggle">
+        Язык: <span id="currentLang">RU</span>
+      </div>
+      <div class="settings-option" id="toggleEffects">
+        Эффекты: <span id="effectsStatus">Вкл</span>
+      </div>
+    </div>
+    <h1 class="glitch" data-text="GALAXY STUDIOS">GALAXY STUDIOS</h1>
+    <div class="subtitle" id="subtitle">Разработка игр с душой</div>
+  </header>
 
-  <div class="lang-switch" id="langSwitch">RU</div>
-  <h1>GALAXY STUDIOS</h1>
-  <div class="subtitle" id="subtitle">Разработка игр с душой</div>
-</header>
-
-<div class="container">
-
-  <p id="p1">
-    <span class="highlight">Galaxy Studios</span> — независимая игровая студия, основанная в 2023 году. 
-    Мы создаём уникальные игровые миры, в которых важны не только механики, но и атмосфера, история и эмоции.
-  </p>
-
-  <div class="quote" id="quote">
-    «Игра — это не просто развлечение. Это вселенная, в которую можно погрузиться».
-  </div>
-
-  <p id="p2">
-    Наша команда объединяет опытных разработчиков, художников, композиторов и дизайнеров, 
-    которые верят в силу интерактивного повествования. Мы работаем над проектами, 
-    в которых каждый элемент — от звука до визуала — служит единой цели: создать незабываемый опыт.
-  </p>
-
-  <p id="p3">
-    Мы не гонимся за количеством — мы создаём то, во что сами хотели бы играть.
-  </p>
-
-  <div class="section">
-    <h2 id="news">Следите за новостями</h2>
-    <p id="follow-text">Подпишитесь на наши соцсети, чтобы первыми узнавать о релизах, обновлениях и закулисье разработки:</p>
-    <a href="https://www.youtube.com/@GALAXYSTUDIOSOFFRU" target="_blank" class="social-link" id="youtubeLink">YouTube</a>
-    <a href="https://vk.com/galaxystudiosoff" target="_blank" class="social-link">VK</a>
-    <a href="https://t.me/galaxystudiosoff" target="_blank" class="social-link">Telegram</a>
-  </div>
-
-  <div class="section">
-    <h2 id="about">О студии</h2>
-    <p id="about-p1">
-      Galaxy Studios — это молодая, но амбициозная команда, стремящаяся внести свой вклад в индустрию игр. 
-      Мы экспериментируем с жанрами, механиками и повествованием, чтобы находить новые способы вовлечь игрока.
+  <div class="container">
+    <p id="p1">
+      <span class="highlight">Galaxy Studios</span> — независимая игровая студия, основанная в 2023 году. 
+      Мы создаём уникальные игровые миры, в которых важны не только механики, но и атмосфера, история и эмоции.
     </p>
-    <p id="about-p2">
-      Наш подход — качество, внимание к деталям и уважение к аудитории.
+
+    <div class="quote" id="quote">
+      «Игра — это не просто развлечение. Это вселенная, в которую можно погрузиться».
+    </div>
+
+    <p id="p2">
+      Наша команда объединяет опытных разработчиков, художников, композиторов и дизайнеров, 
+      которые верят в силу интерактивного повествования. Мы работаем над проектами, 
+      в которых каждый элемент — от звука до визуала — служит единой цели: создать незабываемый опыт.
     </p>
+
+    <p id="p3">
+      Мы не гонимся за количеством — мы создаём то, во что сами хотели бы играть.
+    </p>
+
+    <div class="section">
+      <h2 id="news">Следите за новостями</h2>
+      <p id="follow-text">Подпишитесь на наши соцсети, чтобы первыми узнавать о релизах, обновлениях и закулисье разработки:</p>
+      <a href="https://www.youtube.com/@GALAXYSTUDIOSOFFRU" target="_blank" class="social-link" id="youtubeLink">YouTube</a>
+      <a href="https://vk.com/galaxystudiosoff" target="_blank" class="social-link">VK</a>
+      <a href="https://t.me/galaxystudiosoff" target="_blank" class="social-link">Telegram</a>
+    </div>
+
+    <div class="section">
+      <h2 id="about">О студии</h2>
+      <p id="about-p1">
+        Galaxy Studios — это молодая, но амбициозная команда, стремящаяся внести свой вклад в индустрию игр. 
+        Мы экспериментируем с жанрами, механиками и повествованием, чтобы находить новые способы вовлечь игрока.
+      </p>
+      <p id="about-p2">
+        Наш подход — качество, внимание к деталям и уважение к аудитории.
+      </p>
+    </div>
+
+    <div class="founding-date" id="foundingDate">
+      Дата основания: 12 сентября 2023 года
+    </div>
   </div>
 
-  <div class="founding-date" id="foundingDate">
-    Дата основания: 12 сентября 2023 года
-  </div>
+  <footer>
+    <p id="footerText">© 2025 GALAXY STUDIOS. Не все права защищены.</p>
+  </footer>
 
-</div>
+  <script>
+    const translations = {
+      ru: {
+        subtitle: "Разработка игр с душой",
+        p1: "<span class=\"highlight\">Galaxy Studios</span> — независимая игровая студия, основанная в 2023 году. Мы создаём уникальные игровые миры, в которых важны не только механики, но и атмосфера, история и эмоции.",
+        quote: "«Игра — это не просто развлечение. Это вселенная, в которую можно погрузиться».",
+        p2: "Наша команда объединяет опытных разработчиков, художников, композиторов и дизайнеров, которые верят в силу интерактивного повествования. Мы работаем над проектами, в которых каждый элемент — от звука до визуала — служит единой цели: создать незабываемый опыт.",
+        p3: "Мы не гонимся за количеством — мы создаём то, во что сами хотели бы играть.",
+        news: "Следите за новостями",
+        followText: "Подпишитесь на наши соцсети, чтобы первыми узнавать о релизах, обновлениях и закулисье разработки:",
+        about: "О студии",
+        aboutP1: "Galaxy Studios — это молодая, но амбициозная команда, стремящаяся внести свой вклад в индустрию игр. Мы экспериментируем с жанрами, механиками и повествованием, чтобы находить новые способы вовлечь игрока.",
+        aboutP2: "Наш подход — качество, внимание к деталям и уважение к аудитории.",
+        foundingDate: "Дата основания: 12 сентября 2023 года",
+        footerText: "© 2025 GALAXY STUDIOS. Не все права защищены.",
+        youtubeUrl: "https://www.youtube.com/@GALAXYSTUDIOSOFFRU"
+      },
+      en: {
+        subtitle: "Game Development with Soul",
+        p1: "<span class=\"highlight\">Galaxy Studios</span> is an independent game studio founded in 2023. We create unique game worlds where mechanics, atmosphere, story, and emotion all matter.",
+        quote: "“A game isn’t just entertainment. It’s a universe you can dive into.”",
+        p2: "Our team brings together experienced developers, artists, composers, and designers who believe in the power of interactive storytelling. We work on projects where every element—from sound to visuals—serves one goal: to create an unforgettable experience.",
+        p3: "We don’t chase quantity—we build games we’d want to play ourselves.",
+        news: "Follow Us",
+        followText: "Subscribe to our social media to be the first to know about releases, updates, and behind-the-scenes development:",
+        about: "About the Studio",
+        aboutP1: "Galaxy Studios is a young but ambitious team striving to make its mark on the gaming industry. We experiment with genres, mechanics, and narrative to find new ways to engage players.",
+        aboutP2: "Our approach is quality, attention to detail, and respect for our audience.",
+        foundingDate: "Founded: September 12, 2023",
+        footerText: "© 2025 GALAXY STUDIOS. Not all rights reserved.",
+        youtubeUrl: "https://www.youtube.com/@GALAXYSTUDIOSOFF"
+      }
+    };
 
-<footer>
-  <p id="footerText">© 2025 GALAXY STUDIOS. Не все права защищены.</p>
-</footer>
+    let currentLang = 'ru';
+    let effectsEnabled = true;
 
-<script>
-  const translations = {
-    ru: {
-      subtitle: "Разработка игр с душой",
-      p1: "<span class=\"highlight\">Galaxy Studios</span> — независимая игровая студия, основанная в 2023 году. Мы создаём уникальные игровые миры, в которых важны не только механики, но и атмосфера, история и эмоции.",
-      quote: "«Игра — это не просто развлечение. Это вселенная, в которую можно погрузиться».",
-      p2: "Наша команда объединяет опытных разработчиков, художников, композиторов и дизайнеров, которые верят в силу интерактивного повествования. Мы работаем над проектами, в которых каждый элемент — от звука до визуала — служит единой цели: создать незабываемый опыт.",
-      p3: "Мы не гонимся за количеством — мы создаём то, во что сами хотели бы играть.",
-      news: "Следите за новостями",
-      followText: "Подпишитесь на наши соцсети, чтобы первыми узнавать о релизах, обновлениях и закустье разработки:",
-      about: "О студии",
-      aboutP1: "Galaxy Studios — это молодая, но амбициозная команда, стремящаяся внести свой вклад в индустрию игр. Мы экспериментируем с жанрами, механиками и повествованием, чтобы находить новые способы вовлечь игрока.",
-      aboutP2: "Наш подход — качество, внимание к деталям и уважение к аудитории.",
-      foundingDate: "Дата основания: 12 сентября 2023 года",
-      footerText: "© 2025 GALAXY STUDIOS. Не все права защищены.",
-      youtubeUrl: "https://www.youtube.com/@GALAXYSTUDIOSOFFRU"
-    },
-    en: {
-      subtitle: "Game Development with Soul",
-      p1: "<span class=\"highlight\">Galaxy Studios</span> is an independent game studio founded in 2023. We create unique game worlds where mechanics, atmosphere, story, and emotion all matter.",
-      quote: "“A game isn’t just entertainment. It’s a universe you can dive into.”",
-      p2: "Our team brings together experienced developers, artists, composers, and designers who believe in the power of interactive storytelling. We work on projects where every element—from sound to visuals—serves one goal: to create an unforgettable experience.",
-      p3: "We don’t chase quantity—we build games we’d want to play ourselves.",
-      news: "Follow Us",
-      followText: "Subscribe to our social media to be the first to know about releases, updates, and behind-the-scenes development:",
-      about: "About the Studio",
-      aboutP1: "Galaxy Studios is a young but ambitious team striving to make its mark on the gaming industry. We experiment with genres, mechanics, and narrative to find new ways to engage players.",
-      aboutP2: "Our approach is quality, attention to detail, and respect for our audience.",
-      foundingDate: "Founded: September 12, 2023",
-      footerText: "© 2025 GALAXY STUDIOS. Not all rights reserved.",
-      youtubeUrl: "https://www.youtube.com/@GALAXYSTUDIOSOFF"
+    function setLanguage(lang) {
+      currentLang = lang;
+      document.getElementById('currentLang').textContent = lang.toUpperCase();
+      document.getElementById('subtitle').textContent = translations[lang].subtitle;
+      document.getElementById('p1').innerHTML = translations[lang].p1;
+      document.getElementById('quote').innerHTML = translations[lang].quote;
+      document.getElementById('p2').innerHTML = translations[lang].p2;
+      document.getElementById('p3').innerHTML = translations[lang].p3;
+      document.getElementById('news').textContent = translations[lang].news;
+      document.getElementById('follow-text').textContent = translations[lang].followText;
+      document.getElementById('about').textContent = translations[lang].about;
+      document.getElementById('about-p1').textContent = translations[lang].aboutP1;
+      document.getElementById('about-p2').textContent = translations[lang].aboutP2;
+      document.getElementById('foundingDate').textContent = translations[lang].foundingDate;
+      document.getElementById('footerText').textContent = translations[lang].footerText;
+      document.getElementById('youtubeLink').href = translations[lang].youtubeUrl;
     }
-  };
 
-  let currentLang = 'ru';
+    function toggleEffects() {
+      effectsEnabled = !effectsEnabled;
+      document.body.classList.toggle('no-effects', !effectsEnabled);
+      document.getElementById('effectsStatus').textContent = effectsEnabled ? 'Вкл' : 'Выкл';
+    }
 
-  function setLanguage(lang) {
-    currentLang = lang;
-    document.getElementById('langSwitch').textContent = lang === 'ru' ? 'RU' : 'EN';
-    document.getElementById('subtitle').textContent = translations[lang].subtitle;
-    document.getElementById('p1').innerHTML = translations[lang].p1;
-    document.getElementById('quote').innerHTML = translations[lang].quote;
-    document.getElementById('p2').innerHTML = translations[lang].p2;
-    document.getElementById('p3').innerHTML = translations[lang].p3;
-    document.getElementById('news').textContent = translations[lang].news;
-    document.getElementById('follow-text').textContent = translations[lang].followText;
-    document.getElementById('about').textContent = translations[lang].about;
-    document.getElementById('about-p1').textContent = translations[lang].aboutP1;
-    document.getElementById('about-p2').textContent = translations[lang].aboutP2;
-    document.getElementById('foundingDate').textContent = translations[lang].foundingDate;
-    document.getElementById('footerText').textContent = translations[lang].footerText;
-    document.getElementById('youtubeLink').href = translations[lang].youtubeUrl;
-  }
+    document.getElementById('langToggle').addEventListener('click', () => {
+      setLanguage(currentLang === 'ru' ? 'en' : 'ru');
+    });
 
-  document.getElementById('langSwitch').addEventListener('click', () => {
-    setLanguage(currentLang === 'ru' ? 'en' : 'ru');
-  });
-</script>
+    document.getElementById('toggleEffects').addEventListener('click', toggleEffects);
 
+    document.addEventListener('click', (e) => {
+      const menu = document.getElementById('settingsMenu');
+      const btn = document.getElementById('settingsBtn');
+      if (!menu.contains(e.target) && e.target !== btn) {
+        menu.classList.remove('visible');
+      }
+    });
+
+    document.getElementById('settingsBtn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.getElementById('settingsMenu').classList.toggle('visible');
+    });
+
+    setInterval(() => {
+      if (!effectsEnabled) return;
+      const quotes = document.querySelectorAll('.quote');
+      quotes.forEach(quote => {
+        if (Math.random() < 0.15) {
+          const intensity = Math.random() * 25 + 10;
+          quote.style.textShadow = `0 0 ${intensity}px rgba(127, 255, 212, 0.6)`;
+          setTimeout(() => {
+            quote.style.textShadow = '';
+          }, 120);
+        }
+      });
+    }, 2500);
+  </script>
 </body>
 </html>
+
