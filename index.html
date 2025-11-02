@@ -556,39 +556,48 @@
       }
     };
 
-    let currentLang = 'ru';
-    let effectsEnabled = true;
+  // === Автоопределение языка ===
+  const userLang = (navigator.language || 'en').split('-')[0];
+  const supportedLangs = ['ru', 'en'];
+  let currentLang = supportedLangs.includes(userLang) ? userLang : 'en';
+  let effectsEnabled = true;
 
-    function setLanguage(lang) {
-      currentLang = lang;
-      document.getElementById('currentLang').textContent = lang.toUpperCase();
-      document.getElementById('subtitle').textContent = translations[lang].subtitle;
-      document.getElementById('p1').innerHTML = translations[lang].p1;
-      document.getElementById('quote').innerHTML = translations[lang].quote;
-      document.getElementById('p2').innerHTML = translations[lang].p2;
-      document.getElementById('p3').innerHTML = translations[lang].p3;
-      document.getElementById('news').textContent = translations[lang].news;
-      document.getElementById('follow-text').textContent = translations[lang].followText;
-      document.getElementById('about').textContent = translations[lang].about;
-      document.getElementById('about-p1').textContent = translations[lang].aboutP1;
-      document.getElementById('about-p2').textContent = translations[lang].aboutP2;
-      document.getElementById('foundingDate').textContent = translations[lang].foundingDate;
-      document.getElementById('footerText').textContent = translations[lang].footerText;
-      document.getElementById('youtubeLink').href = translations[lang].youtubeUrl;
-    }
+  function setLanguage(lang) {
+    currentLang = lang;
+    document.getElementById('currentLang').textContent = lang.toUpperCase();
+    document.getElementById('subtitle').textContent = translations[lang].subtitle;
+    document.getElementById('p1').innerHTML = translations[lang].p1;
+    document.getElementById('quote').innerHTML = translations[lang].quote;
+    document.getElementById('p2').innerHTML = translations[lang].p2;
+    document.getElementById('p3').innerHTML = translations[lang].p3;
+    document.getElementById('news').textContent = translations[lang].news;
+    document.getElementById('follow-text').textContent = translations[lang].followText;
+    document.getElementById('about').textContent = translations[lang].about;
+    document.getElementById('about-p1').textContent = translations[lang].aboutP1;
+    document.getElementById('about-p2').textContent = translations[lang].aboutP2;
+    document.getElementById('foundingDate').textContent = translations[lang].foundingDate;
+    document.getElementById('footerText').textContent = translations[lang].footerText;
+    document.getElementById('youtubeLink').href = translations[lang].youtubeUrl;
+  }
 
-    function toggleEffects() {
-      effectsEnabled = !effectsEnabled;
-      document.body.classList.toggle('no-effects', !effectsEnabled);
-      document.getElementById('effectsStatus').textContent = effectsEnabled ? 'Вкл' : 'Выкл';
-    }
+  function toggleEffects() {
+    effectsEnabled = !effectsEnabled;
+    document.body.classList.toggle('no-effects', !effectsEnabled);
+    document.getElementById('effectsStatus').textContent = effectsEnabled ? 'Вкл' : 'Выкл';
+  }
 
+  // Инициализация при загрузке
+  document.addEventListener('DOMContentLoaded', () => {
+    setLanguage(currentLang);
+    
+    // Обработчики
     document.getElementById('langToggle').addEventListener('click', () => {
       setLanguage(currentLang === 'ru' ? 'en' : 'ru');
     });
 
     document.getElementById('toggleEffects').addEventListener('click', toggleEffects);
 
+    // Закрытие меню при клике вне его
     document.addEventListener('click', (e) => {
       const menu = document.getElementById('settingsMenu');
       const btn = document.getElementById('settingsBtn');
@@ -602,6 +611,7 @@
       document.getElementById('settingsMenu').classList.toggle('visible');
     });
 
+    // Атмосферные мерцания
     setInterval(() => {
       if (!effectsEnabled) return;
       const quotes = document.querySelectorAll('.quote');
@@ -615,8 +625,10 @@
         }
       });
     }, 2500);
-  </script>
+  });
+</script>
 </body>
 </html>
+
 
 
