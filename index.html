@@ -80,6 +80,29 @@
       overflow: hidden;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
     }
+    
+    .logo-container {
+      position: absolute;
+      top: 1.2rem;
+      left: 1.5rem;
+      width: 32px;
+      height: 32px;
+      z-index: 10;
+    }
+
+    .logo-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 0 6px rgba(255, 77, 148, 0.6));
+      opacity: 0.85;
+      transition: opacity 0.3s ease;
+    }
+
+    .logo-container img:hover {
+      opacity: 1;
+      filter: drop-shadow(0 0 10px rgba(255, 77, 148, 0.9));
+    }
 
     header::before {
       content: '';
@@ -461,6 +484,11 @@
   <div class="scanline"></div>
 
   <header>
+    <!-- ЛОГОТИП -->
+    <div class="logo-container">
+      <img src="logo.svg" alt="Galaxy Studios Logo">
+    </div>
+
     <div class="settings-btn" id="settingsBtn">⚙️</div>
     <div class="settings-menu" id="settingsMenu">
       <div class="settings-option" id="langToggle">
@@ -629,6 +657,7 @@
 </script>
 </body>
 </html>
+
 
 
 
