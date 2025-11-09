@@ -541,8 +541,8 @@
       <h2 id="news">Следите за новостями</h2>
       <p id="follow-text">Подпишитесь на наши соцсети, чтобы первыми узнавать о релизах, обновлениях и закулисье разработки:</p>
       <a href="https://www.youtube.com/@GALAXYSTUDIOSOFFRU" target="_blank" class="social-link" id="youtubeLink">YouTube</a>
-      <a href="https://vk.com/galaxystudiosoff" target="_blank" class="social-link">VK</a>
-      <a href="https://t.me/galaxystudiosoff" target="_blank" class="social-link">Telegram</a>
+      <a href="https://vk.com/galaxystudiosoff" target="_blank" class="social-link" id="vkLink">VK</a>
+      <a href="https://t.me/galaxystudiosoff" target="_blank" class="social-link" id="telegramLink">Telegram</a>
     </div>
 
     <div class="section">
@@ -580,7 +580,9 @@
         aboutP2: "Наш подход — качество, внимание к деталям и уважение к аудитории.",
         foundingDate: "Дата основания: 12 сентября 2022 года",
         footerText: "© 2025 GALAXY STUDIOS. Не все права защищены.",
-        youtubeUrl: "https://www.youtube.com/@GALAXYSTUDIOSOFFRU"
+        youtubeUrl: "https://www.youtube.com/@GALAXYSTUDIOSOFFRU",
+        vkUrl: "https://vk.com/galaxystudiosoff",
+        telegramUrl: "https://t.me/galaxystudiosoff"
       },
       en: {
         subtitle: "Game Development with Soul",
@@ -595,7 +597,9 @@
         aboutP2: "Our approach is quality, attention to detail, and respect for our audience.",
         foundingDate: "Founded: September 12, 2022",
         footerText: "© 2025 GALAXY STUDIOS. Not all rights reserved.",
-        youtubeUrl: "https://www.youtube.com/@GALAXYSTUDIOSOFF"
+        youtubeUrl: "https://www.youtube.com/@GALAXYSTUDIOSOFF",
+        discordUrl: "https://discord.gg/6yDE5RWJHW",
+        telegramUrl: "https://t.me/galaxystudiosoff"
       }
     };
 
@@ -605,24 +609,35 @@
   let currentLang = supportedLangs.includes(userLang) ? userLang : 'en';
   let effectsEnabled = true;
 
-  function setLanguage(lang) {
-    currentLang = lang;
-    document.getElementById('currentLang').textContent = lang.toUpperCase();
-    document.getElementById('subtitle').textContent = translations[lang].subtitle;
-    document.getElementById('p1').innerHTML = translations[lang].p1;
-    document.getElementById('quote').innerHTML = translations[lang].quote;
-    document.getElementById('p2').innerHTML = translations[lang].p2;
-    document.getElementById('p3').innerHTML = translations[lang].p3;
-    document.getElementById('news').textContent = translations[lang].news;
-    document.getElementById('follow-text').textContent = translations[lang].followText;
-    document.getElementById('about').textContent = translations[lang].about;
-    document.getElementById('about-p1').textContent = translations[lang].aboutP1;
-    document.getElementById('about-p2').textContent = translations[lang].aboutP2;
-    document.getElementById('foundingDate').textContent = translations[lang].foundingDate;
-    document.getElementById('footerText').textContent = translations[lang].footerText;
-    document.getElementById('youtubeLink').href = translations[lang].youtubeUrl;
-  }
+function setLanguage(lang) {
+  currentLang = lang;
+  document.getElementById('currentLang').textContent = lang.toUpperCase();
+  document.getElementById('subtitle').textContent = translations[lang].subtitle;
+  document.getElementById('p1').innerHTML = translations[lang].p1;
+  document.getElementById('quote').innerHTML = translations[lang].quote;
+  document.getElementById('p2').innerHTML = translations[lang].p2;
+  document.getElementById('p3').innerHTML = translations[lang].p3;
+  document.getElementById('news').textContent = translations[lang].news;
+  document.getElementById('follow-text').textContent = translations[lang].followText;
+  document.getElementById('about').textContent = translations[lang].about;
+  document.getElementById('about-p1').textContent = translations[lang].aboutP1;
+  document.getElementById('about-p2').textContent = translations[lang].aboutP2;
+  document.getElementById('foundingDate').textContent = translations[lang].foundingDate;
+  document.getElementById('footerText').textContent = translations[lang].footerText;
 
+  // Обновляем ссылки и текст кнопок
+  if (lang === 'ru') {
+    document.getElementById('youtubeLink').href = translations[lang].youtubeUrl;
+    document.getElementById('vkLink').href = translations[lang].vkUrl;
+    document.getElementById('vkLink').textContent = 'VK'; // ← Восстанавливаем текст!
+    document.getElementById('telegramLink').href = translations[lang].telegramUrl;
+  } else {
+    document.getElementById('youtubeLink').href = translations[lang].youtubeUrl;
+    document.getElementById('vkLink').href = translations[lang].discordUrl;
+    document.getElementById('vkLink').textContent = 'Discord'; // ← Меняем текст
+    document.getElementById('telegramLink').href = translations[lang].telegramUrl;
+  }
+}
   function toggleEffects() {
     effectsEnabled = !effectsEnabled;
     document.body.classList.toggle('no-effects', !effectsEnabled);
@@ -672,10 +687,3 @@
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
